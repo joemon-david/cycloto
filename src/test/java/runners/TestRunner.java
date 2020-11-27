@@ -15,7 +15,7 @@ plugin= {"pretty","html:target","json:target/cucumber.json"},
 monochrome=true,
 strict=true,
 dryRun=false,
-tags= {"@RunNow"}
+tags= {"@SkipTest"}
 )
 public class TestRunner {
 

@@ -3,10 +3,7 @@ package com.cycloides.qa.auto.framework.setup;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
@@ -22,6 +19,15 @@ public class ElementFactory {
 		String type=locatorTokens[1];
 		WebElement element=null;
 		By locator=null;
+		locator = getWebElementLocator(id, type);
+		element=waitForElement(locator,driver);
+		return element;
+		
+		
+	}
+
+	public By getWebElementLocator(String id, String type) {
+		By locator = null;
 		switch (type) {
 		case "css":
 		case "CSS":
@@ -60,11 +66,9 @@ public class ElementFactory {
 			System.out.println("No Matching Element Type found as "+type);
 			break;
 		}
-		element=waitForElement(locator,driver);
-		return element;
-		
-		
+		return locator;
 	}
+
 	public WebElement waitForElement(By locator,WebDriver driver)
 	{
 		Wait<WebDriver> wait=new FluentWait<WebDriver>(driver).
@@ -77,6 +81,25 @@ public class ElementFactory {
 		});
 		
 		return elem;
+	}
+
+	public Keys convertIntoKeys(String key)
+	{
+		Keys keyTpReturn = null;
+		switch (key.trim())
+		{
+			case "Tab":
+				keyTpReturn=Keys.TAB;
+				break;
+			case "Enter":
+				keyTpReturn= Keys.ENTER;
+				break;
+			default:
+				keyTpReturn=Keys.ENTER;
+				break;
+		}
+
+		return keyTpReturn;
 	}
 
 }

@@ -10,11 +10,14 @@ import cucumber.api.Result;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.support.ui.Select;
 
@@ -257,10 +260,12 @@ public class GenericSteps extends TestBase{
 		if(scenarioStatus == Result.Type.FAILED)
 		{
 			status="F";
+			createScreenshot();
 
 		}
 		else if(provider.runningScenario.getStatus() == Result.Type.SKIPPED)
 			status="B";
+		createScreenshot();
 		try {
 			if(provider.scenarioData.isReportResultInTestLink())
 				new TestLinkIntegration().addTestLinkResult(provider.scenarioData.getTestLinkId(), status, "Results executed by the automation scenario "+provider.scenarioData.getScenarioName());
@@ -286,4 +291,22 @@ public class GenericSteps extends TestBase{
 		System.out.println(provider.driver.getPageSource());
 	}
 
+    @And("User Submit the page {string}")
+    public void userSubmitThePage(String arg0) {
+		elem.element(arg0,provider.driver).submit();
+    }
+
+	@Then("User want to simulate the keyboard events {string}")
+	public void userWantToSimulateTheKeyboardEvents(String arg0) {
+		String [] tokens = arg0.trim().split("\\,");
+		Actions act = new Actions(provider.driver);
+
+		for(String key:tokens)
+		{
+			act=act.sendKeys(elem.convertIntoKeys(key));
+
+		}
+		act.build().perform();
+
+	}
 }

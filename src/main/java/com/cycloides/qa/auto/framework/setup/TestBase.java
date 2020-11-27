@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -59,9 +60,10 @@ public class TestBase {
 	{
 		WebDriver driver = null;
 		
-		String chromePath=config.getProperty("chrmeDriverPath");
+		String chromePath=config.getProperty("chromeDriverPath");
 		String firefoxPath=config.getProperty("firefoxDriverPath");
 		String edgePath=config.getProperty("edgeDriverPath");
+		String iePath=config.getProperty("ieDriverPath");
 		switch (browser) {
 		case "chrome":
 			System.setProperty("webdriver.chrome.driver",userDir+chromePath);
@@ -75,6 +77,18 @@ public class TestBase {
 			System.setProperty("webdriver.edge.driver",userDir+edgePath);
 			driver=new EdgeDriver();
 			break;
+		case "ie":
+			System.setProperty("webdriver.ie.driver",userDir+iePath);
+
+			DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer();
+			ieCapabilities.setCapability("nativeEvents",false);
+			ieCapabilities.setCapability("unexpectedAlertBehaviour","accept");
+			ieCapabilities.setCapability("ignoreProtectedModeSettings", true);
+			ieCapabilities.setCapability("disable-popup-blocking", true);
+			ieCapabilities.setCapability("enablePersistentHover", true);
+			ieCapabilities.setCapability("ignoreZoomSetting", true);
+					driver = new InternetExplorerDriver(ieCapabilities);
+
 
 		default:
 			break;
