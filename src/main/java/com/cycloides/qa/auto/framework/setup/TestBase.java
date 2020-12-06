@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -32,11 +33,11 @@ public class TestBase {
 			data=new Properties();
 			appLocator=new Properties();
 			appData=new Properties();
-			String configPath=userDir+"\\src\\test\\resources\\config\\suiteConfig.properties";
-			String locatorPath=userDir+"\\src\\test\\resources\\config\\locators.properties";
-			String dataPath=userDir+"\\src\\test\\resources\\config\\data.properties";
-			String appLocatorPath=userDir+"\\src\\test\\resources\\config\\appLocators.properties";
-			String appDataPath=userDir+"\\src\\test\\resources\\config\\appData.properties";
+			String configPath=userDir+"/src/test/resources/config/suiteConfig.properties";
+			String locatorPath=userDir+"/src/test/resources/config/locators.properties";
+			String dataPath=userDir+"/src/test/resources/config/data.properties";
+			String appLocatorPath=userDir+"/src/test/resources/config/appLocators.properties";
+			String appDataPath=userDir+"/src/test/resources/config/appData.properties";
 			configOS=new FileInputStream(configPath);
 			config.load(configOS);
 			locatorOS=new FileInputStream(locatorPath);
@@ -60,34 +61,39 @@ public class TestBase {
 	{
 		WebDriver driver = null;
 		
-		String chromePath=config.getProperty("chromeDriverPath");
-		String firefoxPath=config.getProperty("firefoxDriverPath");
-		String edgePath=config.getProperty("edgeDriverPath");
-		String iePath=config.getProperty("ieDriverPath");
+//		String chromePath=config.getProperty("chromeDriverPath");
+//		String firefoxPath=config.getProperty("firefoxDriverPath");
+//		String edgePath=config.getProperty("edgeDriverPath");
+//		String iePath=config.getProperty("ieDriverPath");
 		switch (browser) {
 		case "chrome":
-			System.setProperty("webdriver.chrome.driver",userDir+chromePath);
+//			System.setProperty("webdriver.chrome.driver",userDir+chromePath);
+			WebDriverManager.chromedriver().setup();
 			driver=new ChromeDriver();
 			break;
 		case "firefox":
-			System.setProperty("webdriver.gecko.driver",userDir+firefoxPath);
+//			System.setProperty("webdriver.gecko.driver",userDir+firefoxPath);
+			WebDriverManager.firefoxdriver().setup();
 			driver=new FirefoxDriver();
 			break;
 		case "edge":
-			System.setProperty("webdriver.edge.driver",userDir+edgePath);
+//			System.setProperty("webdriver.edge.driver",userDir+edgePath);
+			WebDriverManager.edgedriver().setup();
 			driver=new EdgeDriver();
 			break;
 		case "ie":
-			System.setProperty("webdriver.ie.driver",userDir+iePath);
-
-			DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer();
-			ieCapabilities.setCapability("nativeEvents",false);
-			ieCapabilities.setCapability("unexpectedAlertBehaviour","accept");
-			ieCapabilities.setCapability("ignoreProtectedModeSettings", true);
-			ieCapabilities.setCapability("disable-popup-blocking", true);
-			ieCapabilities.setCapability("enablePersistentHover", true);
-			ieCapabilities.setCapability("ignoreZoomSetting", true);
-					driver = new InternetExplorerDriver(ieCapabilities);
+//			System.setProperty("webdriver.ie.driver",userDir+iePath);
+//			DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer();
+//			ieCapabilities.setCapability("nativeEvents",false);
+//			ieCapabilities.setCapability("unexpectedAlertBehaviour","accept");
+//			ieCapabilities.setCapability("ignoreProtectedModeSettings", true);
+//			ieCapabilities.setCapability("disable-popup-blocking", true);
+//			ieCapabilities.setCapability("enablePersistentHover", true);
+//			ieCapabilities.setCapability("ignoreZoomSetting", true);
+//					driver = new InternetExplorerDriver(ieCapabilities);
+			WebDriverManager.iedriver().setup();
+			driver = new InternetExplorerDriver();
+			break;
 
 
 		default:
